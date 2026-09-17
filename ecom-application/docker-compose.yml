@@ -13,20 +13,17 @@ services:
     networks:
       - microservices-net
     restart: unless-stopped
-	
-	
+
   mail-dev:
     container_name: ms_mail_dev
     image: maildev/maildev
     ports:
       - 1080:1080
       - 1025:1025
-	
-	
 
   pgadmin:
    container_name: ms_pgadmin
-   image: dpage/pgamin4
+   image: dpage/pgadmin4
    environment:
     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@pgadmin.org}
     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
@@ -38,9 +35,9 @@ services:
    networks:
     - microservices-net
    restart: unless-stopped
-	
-   
-   mongo:
+
+
+  mongo:
     container_name: ms_mongo
     image: mongo
     ports:
@@ -50,23 +47,24 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root123
-	  
-	  
-   mongo-express:
+
+
+  mongo-express:
     container_name: ms_mongo_express
-    image: mongo-experess
+    image: mongo-express
     ports: 
       - 8081:8081
-    restart: alawys
+    restart: always
     environment:
       - MS_CONFIG_MONGODB_ADMINUSERNAME=admin
       - MS_CONGIF_MONGODB_ADMINPASSWORD=admin123
       - MS_CONFIG_MONGODB_SERVER=mongodb
-   
+
 networks:
   microservices-net:
     driver: bridge
-	  
+
+
 volumes:
   postgres:
   pgadmin:
