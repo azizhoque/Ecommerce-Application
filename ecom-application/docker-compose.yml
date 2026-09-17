@@ -5,6 +5,59 @@ services:
     environment: 
       POSTGRESQL_USERNAME: postgres
       POSTGRESQL_PASSWORD: root123
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - microservices-net
+    restart: unless-stopped
+	
+	
+  pgadmin:
+   container_name: ms_pgadmin
+   image: dpage/pgamin4
+   environment:
+    PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@pgadmin.org}
+    PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    PGADMIN_CONFIG_SERVER_MODE: 'false'
+   volumes:
+    - postgres:/var/lib/pgadmin
+   ports:
+    - 5050:80
+   networks:
+    - microservices-net
+   restart: unless-stopped
+	
+   
+   mongo:
+    container_name: ms_mongo
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/data
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root123
+	  
+	  
+   mongo-express:
+    container_name: ms_mongo_express
+    image: mongo-experess
+    ports: 
+      - 8081:8081
+    restart: alawys
+    environment:
+      - MS_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - MS_CONGIF_MONGODB_ADMINPASSWORD=admin123
+      - MS_CONFIG_MONGODB_SERVER=mongodb
+   
+networks:
+  microservices-net:
+    driver: bridge
+	  
 volumes:
   postgres:
   pgadmin:
