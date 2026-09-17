@@ -5,3 +5,7 @@ services:
     environment: 
       POSTGRESQL_USERNAME: postgres
       POSTGRESQL_PASSWORD: root123
+volumes:
+  postgres:
+  pgadmin:
+  mongo:
