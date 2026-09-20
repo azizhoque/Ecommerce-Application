@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "management.security.enabled",
-  "type": "java.lang.String",
-  "description": "A description for 'management.security.enabled'"
-}]}
+{"properties": [
+  {
+    "name": "management.security.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'management.security.enabled'"
+  },
+  {
+    "name": "eureka.client.serviveUrl.default-zone",
+    "type": "java.lang.String",
+    "description": "A description for 'eureka.client.serviveUrl.default-zone'"
+  }
+]}
