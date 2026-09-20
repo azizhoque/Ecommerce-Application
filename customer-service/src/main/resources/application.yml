@@ -1,14 +1,8 @@
 spring:
   application:
     name: customer-service
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: customer
-      authentication-database: admin
-      username: root
-      password: root123
+  config:
+    import: configserver:http://localhost:8888
 
 server:
   port: 8090
