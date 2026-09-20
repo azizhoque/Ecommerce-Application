@@ -3,8 +3,8 @@ services:
     container_name: ms_pg_sql
     image: postgres
     environment: 
-      POSTGRESQL_USERNAME: postgres
-      POSTGRESQL_PASSWORD: root123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root123
       PGDATA: /var/lib/postgresql/data
     volumes:
       - postgres:/var/lib/postgresql/data
@@ -29,7 +29,7 @@ services:
     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
     PGADMIN_CONFIG_SERVER_MODE: 'false'
    volumes:
-    - postgres:/var/lib/pgadmin
+    - pgadmin:/var/lib/pgadmin
    ports:
     - 5050:80
    networks:
@@ -45,8 +45,8 @@ services:
     volumes:
       - mongo:/data
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root123
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
 
 
   mongo-express:
@@ -56,9 +56,10 @@ services:
       - 8081:8081
     restart: always
     environment:
-      - MS_CONFIG_MONGODB_ADMINUSERNAME=admin
-      - MS_CONGIF_MONGODB_ADMINPASSWORD=admin123
-      - MS_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=admin123
+      - ME_CONFIG_MONGODB_SERVER=ms_mongo
+      - ME_CONFIG_BASICAUTH="false"
 
 networks:
   microservices-net:
