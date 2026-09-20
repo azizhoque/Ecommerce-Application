@@ -8,6 +8,7 @@ import com.ecom.mapper.CustomerMapper;
 import com.ecom.model.Customer;
 import com.ecom.repository.CustomerRepository;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -25,14 +26,25 @@ public class CustomerService {
 	}
 
 	public void updateCustomer(String id, @Valid CustomerRequest request) {
-
-		var customer = repository.findById(id)
-				.orElseThrow(() -> new CustomerNotFoundException("Customer Not found with id: " + id));
-		customer.setFirstName(request.getFirstName());
-		customer.setLastName(request.getLastName());
-		customer.setEmail(request.getEmail());
-		customer.setAddress(request.getAddress());
-
+		var customer = repository.findById(id).orElseThrow(() -> new CustomerNotFoundException(
+				"Cannot update customer:: Customer not found for provided id:" + id));
+		mergerCustomer(customer, request);
 		repository.save(customer);
+	}
+
+	private void mergerCustomer(Customer customer, @Valid CustomerRequest request) {
+
+		if (StringUtils.isNotBlank(request.getFirstName())) {
+			customer.setFirstName(request.getFirstName());
+		}
+		if (StringUtils.isNotBlank(request.getLastName())) {
+			customer.setLastName(request.getLastName());
+		}
+		if (StringUtils.isNotBlank(request.getEmail())) {
+			customer.setEmail(request.getEmail());
+		}
+		if (request.getAddress() != null) {
+			customer.setAddress(request.getAddress());
+		}
 	}
 }
