@@ -1,4 +1,4 @@
-package com.ecom.exceptionhandle;
+package com.ecom.exception;
 
 public class CustomerNotFoundException extends RuntimeException{
 
