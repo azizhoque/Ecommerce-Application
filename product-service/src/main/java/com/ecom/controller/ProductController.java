@@ -17,6 +17,7 @@ import com.ecom.product.response.ProductResponse;
 import com.ecom.product.request.ProductRequest;
 import com.ecom.service.IProductService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -27,15 +28,15 @@ public class ProductController {
 	private final IProductService service;
 
 	@PostMapping("/addProduct")
-	public ResponseEntity<Integer> createProduct(@RequestBody ProductRequest request) {
+	public ResponseEntity<Integer> createProduct(@RequestBody @Valid ProductRequest request) {
 		var product = service.addProduct(request);
 		return new ResponseEntity<Integer>(product,HttpStatus.CREATED);
 	}
 
 	@PostMapping("/purchase")
-	public ResponseEntity<List<ProductPurchaseResponse>> purchaseProduct(@RequestBody List<ProductPurchaseRequest> request) {
+	public ResponseEntity<List<ProductPurchaseResponse>> purchaseProduct(@RequestBody @Valid List<ProductPurchaseRequest> request) {
 		var purchase = service.purchaseProduct(request);
-		return new ResponseEntity<List<ProductPurchaseResponse>>(purchase,HttpStatus.OK);
+		return new ResponseEntity<List<ProductPurchaseResponse>>(purchase,HttpStatus.CREATED);
 	}
 	
 	@GetMapping("findById/{product-id}")
