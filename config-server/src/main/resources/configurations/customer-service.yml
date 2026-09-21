@@ -7,3 +7,6 @@ spring:
       authentication-database: admin
       username: root
       password: root123
+      
+server:
+  port: 8090
