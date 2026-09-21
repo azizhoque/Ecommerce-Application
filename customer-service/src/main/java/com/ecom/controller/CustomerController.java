@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ecom.customer.request.CustomerRequest;
 import com.ecom.customer.response.CustomerResponse;
-import com.ecom.service.CustomerService;
+import com.ecom.service.ICustomerService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomerController {
 
-	private final CustomerService service;
+	private final ICustomerService service;
 	
 	@PostMapping("/registerCustomer")
 	public ResponseEntity<String> createCustomer(@RequestBody @Valid CustomerRequest request){
