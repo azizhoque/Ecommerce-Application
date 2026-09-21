@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import com.ecom.model.Category;
 import com.ecom.model.Product;
 import com.ecom.product.request.ProductRequest;
+import com.ecom.product.response.ProductPurchaseResponse;
 import com.ecom.product.response.ProductResponse;
+
 
 @Service
 public class ProductMapper {
@@ -32,6 +34,17 @@ public class ProductMapper {
 				product.getCategory().getId(),
 				product.getCategory().getName(),
 				product.getCategory().getDescription()
+				);
+	}
+
+	public ProductPurchaseResponse toProductPurchaseResponse(Product product,double quantity) {
+		
+		return new ProductPurchaseResponse(
+				product.getId(), 
+				product.getName(), 
+				product.getDescription(), 
+				product.getPrice(), 
+				quantity
 				);
 	}
 
