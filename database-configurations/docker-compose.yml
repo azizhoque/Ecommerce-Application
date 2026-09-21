@@ -61,6 +61,16 @@ services:
       - ME_CONFIG_MONGODB_SERVER=ms_mongo
       - ME_CONFIG_BASICAUTH="false"
 
+
+  redis:
+    image: redis:7
+    container_name: ecommerce-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+
 networks:
   microservices-net:
     driver: bridge
@@ -70,3 +80,4 @@ volumes:
   postgres:
   pgadmin:
   mongo:
+  redis_data:
