@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ecom.product.request.ProductPurchaseRequest;
 import com.ecom.product.response.ProductPurchaseResponse;
 import com.ecom.product.response.ProductResponse;
-import com.ecom.productrequest.ProductRequest;
+import com.ecom.product.request.ProductRequest;
 import com.ecom.service.IProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,24 +28,25 @@ public class ProductController {
 
 	@PostMapping("/addProduct")
 	public ResponseEntity<Integer> createProduct(@RequestBody ProductRequest request) {
-		service.addProduct(request);
-		return new ResponseEntity<Integer>(HttpStatus.CREATED);
+		var product = service.addProduct(request);
+		return new ResponseEntity<Integer>(product,HttpStatus.CREATED);
 	}
 
 	@PostMapping("/purchase")
-	public ResponseEntity<List<ProductPurchaseResponse>> purchaseProduct(@RequestBody ProductPurchaseRequest response) {
-		service.purchaseProduct(response);
-		return new ResponseEntity<List<ProductPurchaseResponse>>(HttpStatus.OK);
+	public ResponseEntity<List<ProductPurchaseResponse>> purchaseProduct(@RequestBody List<ProductPurchaseRequest> request) {
+		var purchase = service.purchaseProduct(request);
+		return new ResponseEntity<List<ProductPurchaseResponse>>(purchase,HttpStatus.OK);
 	}
 	
-	@GetMapping("/{product-id}")
+	@GetMapping("findById/{product-id}")
 	public ResponseEntity<ProductResponse> findById(@PathVariable("product-id") Integer productId){
-		service.findById(productId);
-		return new ResponseEntity<ProductResponse>(HttpStatus.OK);
+		var product = service.findById(productId);
+		return new ResponseEntity<ProductResponse>(product,HttpStatus.OK);
 	}
 	
+	@GetMapping("/findAll")
 	public ResponseEntity<List<ProductResponse>> findAll(){
-		service.findAll();
-		return new ResponseEntity<List<ProductResponse>>(HttpStatus.OK);
+		var product = service.findAll();
+		return new ResponseEntity<List<ProductResponse>>(product,HttpStatus.OK);
 	}
 }
