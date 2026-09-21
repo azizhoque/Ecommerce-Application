@@ -1,7 +1,8 @@
 package com.ecom.service;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import com.ecom.productrequest.ProductRequest;
 
 public interface IProductService {
 
