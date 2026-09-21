@@ -14,8 +14,8 @@ spring:
     enabled: true
     baseline-description: "init"
     baseline-version: 0
-    user: ${spring.datasource.data-username}
-    password: ${spring.datasource.data-password}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
 
 server:
   port: 8050
