@@ -10,6 +10,6 @@ import com.ecom.model.Product;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Integer> {
 
-	List<Product> findAllByIdOrderById(List<Integer> productIds);
+	List<Product> findAllByIdInOrderById(List<Integer> productIds);
 
 }
