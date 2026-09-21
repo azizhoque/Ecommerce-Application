@@ -39,7 +39,7 @@ public class ProductController {
 		return new ResponseEntity<List<ProductPurchaseResponse>>(purchase,HttpStatus.CREATED);
 	}
 	
-	@GetMapping("findById/{product-id}")
+	@GetMapping("/findById/{product-id}")
 	public ResponseEntity<ProductResponse> findById(@PathVariable("product-id") Integer productId){
 		var product = service.findById(productId);
 		return new ResponseEntity<ProductResponse>(product,HttpStatus.OK);
