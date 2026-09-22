@@ -7,7 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-    database: postgresqla
+    database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 server:
   port: 8070
