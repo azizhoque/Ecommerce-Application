@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.ecom.order.model.PaymentMethod;
+import com.ecom.productpurchase.request.PurchaseRequest;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
