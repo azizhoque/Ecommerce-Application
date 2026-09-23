@@ -60,10 +60,11 @@ public class NotificationConsumer {
 				build());
 		// send mail
 		var customerName = orderConfirmation.customer().firstName() + " " + orderConfirmation.customer().lastName();
-		emailService.sendPaymentSuccessEmail(
+		emailService.sendOrerConfirmationEmail(
 				orderConfirmation.customer().email(), 
-				customerName,
+				customerName, 
 				orderConfirmation.amount(), 
-				orderConfirmation.orderReference());
+				orderConfirmation.orderReference(), 
+				orderConfirmation.product());
 	}
 }
