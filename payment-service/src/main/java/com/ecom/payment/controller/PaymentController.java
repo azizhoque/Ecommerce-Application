@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ecom.payment.customer.PaymentRequest;
-import com.ecom.payment.response.PaymentResponse;
 import com.ecom.payment.service.IPaymentService;
 
 import lombok.RequiredArgsConstructor;

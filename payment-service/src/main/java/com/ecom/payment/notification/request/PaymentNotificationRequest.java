@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import com.ecom.payment.model.PaymentMethod;
 
-public record PaymentNotificationrequest(
+public record PaymentNotificationRequest(
 		
 		String orderReference,
 		
