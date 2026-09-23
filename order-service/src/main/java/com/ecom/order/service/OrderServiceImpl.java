@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import com.ecom.kafka.producer.OrderConfirmation;
 import com.ecom.kafka.producer.OrderProducer;
 import com.ecom.order.client.CustomerClient;
+import com.ecom.order.client.PaymentClient;
 import com.ecom.order.client.ProductClient;
 import com.ecom.order.exception.BusinessException;
 import com.ecom.order.mapper.OrderMapper;
+import com.ecom.order.payment.request.PaymentRequest;
 import com.ecom.order.repository.IOrderRepository;
 import com.ecom.order.request.OrderRequest;
 import com.ecom.order.response.OrderResponse;
@@ -36,6 +38,8 @@ public class OrderServiceImpl implements IOrderService {
 	private final OrderLineService orderLineService;
 
 	private final OrderProducer orderProducer;
+	
+	private final PaymentClient paymentClient;
 
 	@Override
 	public Integer createOrder(OrderRequest request) {
@@ -64,6 +68,15 @@ public class OrderServiceImpl implements IOrderService {
 
 		// payment confirmation
 
+		paymentClient.requestOrderPayment(
+				new PaymentRequest(
+						request.amount(), 
+						request.payment(), 
+						order.getId(), 
+						order.getReference(), 
+						customer)
+				);
+		
 		// send order confirmation ->notification-ms
 		orderProducer.orderSendConfirmation(
 
