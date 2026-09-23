@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import com.ecom.notification.kafka.order.OrderConfirmation;
 import com.ecom.notification.kafka.payment.PaymentConfirmation;
 import com.ecom.notification.model.Notification;
 import com.ecom.notification.model.NotificationType;
@@ -33,5 +34,22 @@ public class NotificationConsumer {
 				paymentConfirmation(paymentConfirmation).
 				build()
 				);
+	}
+		@KafkaListener(topics = "order-topic")
+		public void consumeOrderConfirmationNotification(OrderConfirmation orderConfirmation) {
+			
+			log.info("Consuming the message from order-topic Tpoic :: %s", orderConfirmation);
+			
+			notificationRepository.save(
+					
+					Notification.builder().
+					type(NotificationType.ORDER_CONFIRMATION).
+					notificationDate(LocalDateTime.now()).
+					orderConfirmation(orderConfirmation).
+					build()
+					);
+		//send mail
+		
+		
 	}
 }
