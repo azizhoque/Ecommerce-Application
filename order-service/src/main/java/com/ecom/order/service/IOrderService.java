@@ -11,4 +11,6 @@ public interface IOrderService {
 
 	public List<OrderResponse> findAll();
 
+	public OrderResponse findById(Integer orderId);
+
 }
