@@ -1,4 +1,3 @@
-
 INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Computer Keyboards', 'Keyboards');
 INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Computer Monitors', 'Monitors');
 INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Display Screens', 'Screens');
@@ -13,7 +12,6 @@ INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'C
 INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Power Adapters', 'Adapters');
 INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Printers and Scanners', 'Printers');
 INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Networking Equipment', 'Networking');
-INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Computer Software', 'Software');
 INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Computer Software', 'Software');
 INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Laptop Bags', 'Bags');
 INSERT INTO category (id, description, name) VALUES (nextval('category_seq'), 'Cooling Systems', 'Cooling');
@@ -107,7 +105,7 @@ VALUES
     (nextval('product_seq'), 10, 'Ergonomic office chair with lumbar support', 'Ergonomic Office Chair 1', 199.99, (SELECT id FROM category WHERE name = 'Chairs')),
     (nextval('product_seq'), 8, 'Gaming chair with reclining backrest', 'Gaming Chair 1', 249.99, (SELECT id FROM category WHERE name = 'Chairs')),
     (nextval('product_seq'), 12, 'Mesh-back chair with adjustable armrests', 'Mesh Office Chair 1', 149.99, (SELECT id FROM category WHERE name = 'Chairs'));
-    
+
 -- Products for 'Cables' category
 INSERT INTO public.product (id, available_quantity, description, name, price, category_id)
 VALUES
@@ -135,14 +133,6 @@ VALUES
     (nextval('product_seq'), 18, 'Dual-band WiFi 6 router', 'WiFi 6 Router 1', 129.99, (SELECT id FROM category WHERE name = 'Networking')),
     (nextval('product_seq'), 25, '8-port gigabit ethernet switch', 'Gigabit Switch 8-Port 1', 39.99, (SELECT id FROM category WHERE name = 'Networking')),
     (nextval('product_seq'), 20, 'USB WiFi adapter with high-gain antenna', 'USB WiFi Adapter 1', 22.99, (SELECT id FROM category WHERE name = 'Networking'));
-
--- Products for 'Software' category
-INSERT INTO public.product (id, available_quantity, description, name, price, category_id)
-VALUES
-    (nextval('product_seq'), 100, 'Antivirus software 1-year license, single device', 'Antivirus License 1-Year 1', 29.99, (SELECT id FROM category WHERE name = 'Software')),
-    (nextval('product_seq'), 80, 'Office productivity suite, lifetime license', 'Office Suite License 1', 99.99, (SELECT id FROM category WHERE name = 'Software')),
-    (nextval('product_seq'), 60, 'PDF editor software annual subscription', 'PDF Editor Subscription 1', 39.99, (SELECT id FROM category WHERE name = 'Software'));
-    
 
 -- Products for 'Software' category
 INSERT INTO public.product (id, available_quantity, description, name, price, category_id)
