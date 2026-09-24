@@ -24,7 +24,7 @@ public class NotificationConsumer {
 
 	private EmailService emailService;
 
-	@KafkaListener(topics = "payment-topic")
+	@KafkaListener(topics = "payment-topic",groupId = "paymentGroup")
 	public void consumePaymentSuccessNotification(PaymentConfirmation paymentConfirmation) {
 
 		log.info("Consuming the message from payment-topic Tpoic :: %s", paymentConfirmation);
@@ -46,7 +46,7 @@ public class NotificationConsumer {
 				paymentConfirmation.orderReference());
 	}
 
-	@KafkaListener(topics = "order-topic")
+	@KafkaListener(topics = "order-topic",groupId = "orderGroup")
 	public void consumeOrderConfirmationNotification(OrderConfirmation orderConfirmation) {
 
 		log.info("Consuming the message from order-topic Tpoic :: %s", orderConfirmation);
