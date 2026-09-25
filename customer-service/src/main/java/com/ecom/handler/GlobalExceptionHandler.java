@@ -31,4 +31,9 @@ public class GlobalExceptionHandler {
 				});
 		return new ResponseEntity<ErrorResponse>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<String> whencustomerRequestisnull(IllegalArgumentException iex){
+		return new ResponseEntity<String>(iex.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }
