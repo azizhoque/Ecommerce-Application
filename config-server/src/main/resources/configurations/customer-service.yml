@@ -5,8 +5,8 @@ spring:
       port: 27017
       database: customer
       authentication-database: admin
-      username: root
-      password: root123
-      
+      username: admin
+      password: admin123
+
 server:
   port: 8090
