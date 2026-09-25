@@ -22,7 +22,7 @@ public class CustomerServiceImpl implements ICustomerService{
 
 	private final CustomerRepository repository;
 
-	private CustomerMapper mapper;
+	private final CustomerMapper mapper;
 
 	public String createCustomer(@Valid CustomerRequest request) {
 		var customer = repository.save(mapper.toCustomer(request));
