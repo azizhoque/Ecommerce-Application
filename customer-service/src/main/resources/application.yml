@@ -3,6 +3,3 @@ spring:
     name: customer-service
   config:
     import: configserver:http://localhost:8888
-
-
-
