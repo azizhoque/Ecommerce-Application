@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NotificationProducer {
 
-	private KafkaTemplate<String, PaymentNotificationRequest> kafkaTemplate;
+	private final KafkaTemplate<String, PaymentNotificationRequest> kafkaTemplate;
 	
 	public void sendNotification(PaymentNotificationRequest request) {
 		
