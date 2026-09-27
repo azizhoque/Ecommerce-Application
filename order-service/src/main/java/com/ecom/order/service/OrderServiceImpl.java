@@ -21,6 +21,7 @@ import com.ecom.orderline.service.OrderLineService;
 import com.ecom.productpurchase.request.PurchaseRequest;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -41,6 +42,7 @@ public class OrderServiceImpl implements IOrderService {
 	
 	private final PaymentClient paymentClient;
 
+	@Transactional
 	@Override
 	public Integer createOrder(OrderRequest request) {
 
