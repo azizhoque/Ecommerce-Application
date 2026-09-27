@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PaymentController {
 
-	private IPaymentService service;
+	private final IPaymentService service;
 
 	@PostMapping
 	public ResponseEntity<Integer> createPayment(@RequestBody PaymentRequest request) {
