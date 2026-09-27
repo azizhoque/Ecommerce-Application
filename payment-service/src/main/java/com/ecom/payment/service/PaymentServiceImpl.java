@@ -14,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements IPaymentService {
 
-	private IPaymentRepository repository;
+	private final IPaymentRepository repository;
 	
-	private PaymentMapper mapper;
+	private final PaymentMapper mapper;
 	
-	private NotificationProducer notificationProducer;
+	private final NotificationProducer notificationProducer;
 	
 	@Override
 	public Integer createPayment(PaymentRequest request) {
