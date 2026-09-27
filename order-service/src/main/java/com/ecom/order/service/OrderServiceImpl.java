@@ -1,6 +1,7 @@
 package com.ecom.order.service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -55,7 +56,12 @@ public class OrderServiceImpl implements IOrderService {
 		// purchase the product ---by product-ms(Using RestTemplate)
 
 		var purchaseProducts = this.productClient.purchaseProducts(request.product());
-		var order = this.repository.save(mapper.toOrder(request));
+		
+		//create order reference for each order
+		String reference = "ORD-" + UUID.randomUUID();
+		
+		//save order into db
+		var order = this.repository.save(mapper.toOrder(request,reference));
 
 		// persist order
 

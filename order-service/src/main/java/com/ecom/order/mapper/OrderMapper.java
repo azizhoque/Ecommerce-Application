@@ -9,11 +9,11 @@ import com.ecom.order.response.OrderResponse;
 @Service
 public class OrderMapper {
 
-	public Order toOrder(OrderRequest request) {
+	public Order toOrder(OrderRequest request,String reference) {
 
 		return Order.builder().
 				id(request.id()).
-				reference(request.reference()).
+				reference(reference).
 				payment(request.payment()).
 				totalAmount(request.amount()).
 				customerId(request.customerId()).build();
