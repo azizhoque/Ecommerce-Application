@@ -47,6 +47,9 @@ public class Order {
 
 	@Enumerated(EnumType.STRING)
 	private PaymentMethod payment;
+	
+	@Enumerated(EnumType.STRING)
+	private OrderStatus orderStatus;
 
 	private String customerId;
     @OneToMany(mappedBy = "order")

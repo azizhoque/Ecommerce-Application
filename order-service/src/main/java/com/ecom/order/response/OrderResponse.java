@@ -2,6 +2,7 @@ package com.ecom.order.response;
 
 import java.math.BigDecimal;
 
+import com.ecom.order.model.OrderStatus;
 import com.ecom.order.model.PaymentMethod;
 
 public record OrderResponse(
@@ -14,7 +15,9 @@ public record OrderResponse(
 		
 		PaymentMethod payment,
 		
-		String customerId
+		String customerId,
+		
+		OrderStatus status
 		
 		) {
 
