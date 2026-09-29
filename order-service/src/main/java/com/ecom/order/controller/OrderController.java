@@ -26,9 +26,9 @@ public class OrderController {
 	private final IOrderService service;
 	
 	@PostMapping("/createOrder")
-	public ResponseEntity<Integer> createOrder(@RequestBody @Valid OrderRequest request){
-		service.createOrder(request);
-		return new ResponseEntity<Integer>(HttpStatus.CREATED);
+	public ResponseEntity<OrderResponse> createOrder(@RequestBody @Valid OrderRequest request){
+		var response = service.createOrder(request);
+		return new ResponseEntity<OrderResponse>(response,HttpStatus.CREATED);
 	}
 	
 	@GetMapping
