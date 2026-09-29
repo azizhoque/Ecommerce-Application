@@ -7,7 +7,7 @@ import com.ecom.order.response.OrderResponse;
 
 public interface IOrderService {
 
-	public Integer createOrder(OrderRequest request);
+	public OrderResponse createOrder(OrderRequest request);
 
 	public List<OrderResponse> findAll();
 
