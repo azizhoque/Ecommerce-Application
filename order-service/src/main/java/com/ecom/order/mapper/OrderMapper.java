@@ -15,7 +15,6 @@ public class OrderMapper {
 				id(request.id()).
 				reference(reference).
 				payment(request.payment()).
-				totalAmount(request.amount()).
 				customerId(request.customerId()).build();
 	}
 	
@@ -25,7 +24,9 @@ public class OrderMapper {
 				order.getReference(),
 				order.getTotalAmount(),
 				order.getPayment(),
-				order.getCustomerId()
+				order.getCustomerId(),
+				order.getOrderStatus()
+				
 				);
 	}
 }
