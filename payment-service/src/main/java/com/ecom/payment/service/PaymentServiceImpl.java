@@ -31,10 +31,13 @@ public class PaymentServiceImpl implements IPaymentService {
 						request.payMethod(), 
 						request.customer().firstName(), 
 						request.customer().lastName(), 
-						request.customer().email())
+						request.customer().email(), 
+						request.status(), 
+						request.reason())
 				);
 		
 		return payment.getId();
 	}
+	
 
 }

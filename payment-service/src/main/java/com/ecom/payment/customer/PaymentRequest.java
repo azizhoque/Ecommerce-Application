@@ -16,7 +16,11 @@ public record PaymentRequest(
 		
 		String orderReference,
 		
-		Customer customer
+		Customer customer,
+		
+		String status,
+		 
+		String reason
 		
 		) {
 
