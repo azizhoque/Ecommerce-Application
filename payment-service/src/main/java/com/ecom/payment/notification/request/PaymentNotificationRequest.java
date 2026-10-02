@@ -16,7 +16,11 @@ public record PaymentNotificationRequest(
 		
 		String customerLastName,
 		
-		String customerEmail
+		String customerEmail,
+		
+		String status,
+		
+	    String reason
 		
 		) {
 
