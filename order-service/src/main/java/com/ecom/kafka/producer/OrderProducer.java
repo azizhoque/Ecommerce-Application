@@ -14,17 +14,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderProducer {
 
-	private final KafkaTemplate<String, OrderConfirmation> kafkaTemplate;
+	private final KafkaTemplate<String, Object> kafkaTemplate;
 	
-	public void orderSendConfirmation(OrderConfirmation orderConfirmation) {
-		log.info("Sending order confirmation");
+	public void sendOrderConfirmation(OrderPaymentSuccess event) {
 
-		Message<OrderConfirmation> message = 
-				MessageBuilder.
-				withPayload(orderConfirmation).
-				setHeader(KafkaHeaders.TOPIC, "order-topic").
-				build();
-		
-		kafkaTemplate.send(message);
-	}
+        Message<OrderPaymentSuccess> message =
+                MessageBuilder
+                        .withPayload(event)
+                        .setHeader(KafkaHeaders.TOPIC, "order-confirmed")
+                        .build();
+
+        kafkaTemplate.send(message);
+    }
+
+    public void sendOrderFailed(OrderPaymentFailed event) {
+
+        Message<OrderPaymentFailed> message =
+                MessageBuilder
+                        .withPayload(event)
+                        .setHeader(KafkaHeaders.TOPIC, "order-failed")
+                        .build();
+
+        kafkaTemplate.send(message);
+    }
 }
