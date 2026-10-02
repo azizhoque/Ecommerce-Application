@@ -17,7 +17,9 @@ public record OrderResponse(
 		
 		String customerId,
 		
-		OrderStatus status
+		OrderStatus status,
+		
+		PaymentStatus paymentStatus
 		
 		) {
 
