@@ -1,4 +1,4 @@
-package com.ecom.payment.notification;
+package com.ecom.payment.producer;
 
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
