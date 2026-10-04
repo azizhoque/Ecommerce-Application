@@ -16,9 +16,9 @@ public class OrderProducer {
 
 	private final KafkaTemplate<String, Object> kafkaTemplate;
 	
-	public void sendOrderConfirmation(OrderPaymentSuccess event) {
+	public void sendOrderConfirmation(OrderSuccess event) {
 
-        Message<OrderPaymentSuccess> message =
+        Message<OrderSuccess> message =
                 MessageBuilder
                         .withPayload(event)
                         .setHeader(KafkaHeaders.TOPIC, "order-confirmed")
@@ -27,12 +27,12 @@ public class OrderProducer {
         kafkaTemplate.send(message);
     }
 
-    public void sendOrderFailed(OrderPaymentFailed event) {
+    public void sendOrderNotPlaced(OrderPaymentFailed event) {
 
         Message<OrderPaymentFailed> message =
                 MessageBuilder
                         .withPayload(event)
-                        .setHeader(KafkaHeaders.TOPIC, "order-failed")
+                        .setHeader(KafkaHeaders.TOPIC, "order-not-placed")
                         .build();
 
         kafkaTemplate.send(message);
