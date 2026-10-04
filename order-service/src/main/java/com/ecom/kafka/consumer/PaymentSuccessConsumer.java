@@ -21,7 +21,7 @@ public class PaymentSuccessConsumer {
 	
 	@KafkaListener(
             topics = "payment-success",
-            groupId = "order-payment-group"
+            groupId = "payment-group"
     )
     public void handlePaymentSuccess(OrderPaymentSuccess event) {
 
