@@ -1,13 +1,12 @@
 package com.ecom.order.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.ecom.kafka.producer.OrderConfirmation;
-import com.ecom.kafka.producer.OrderProducer;
 import com.ecom.order.client.CustomerClient;
 import com.ecom.order.client.PaymentClient;
 import com.ecom.order.client.ProductClient;
@@ -39,13 +38,11 @@ public class OrderServiceImpl implements IOrderService {
 
 	private final OrderLineService orderLineService;
 
-	private final OrderProducer orderProducer;
-	
 	private final PaymentClient paymentClient;
 
 	@Transactional
 	@Override
-	public Integer createOrder(OrderRequest request) {
+	public OrderResponse createOrder(OrderRequest request) {
 
 		// check customer form customer-ms by using feign-client
 
@@ -57,11 +54,29 @@ public class OrderServiceImpl implements IOrderService {
 
 		var purchaseProducts = this.productClient.purchaseProducts(request.product());
 		
+		  // 3. Calculate total amount from Product Service response
+        BigDecimal totalAmount = purchaseProducts.stream()
+                .map(product ->
+                        product.price()
+                                .multiply(
+                                        BigDecimal.valueOf(product.quantity())
+                                )
+                )
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+		
 		//create order reference for each order
 		String reference = "ORD-" + UUID.randomUUID();
 		
-		//save order into db
-		var order = this.repository.save(mapper.toOrder(request,reference));
+
+        // 5. Create order with PENDING status
+        var order = mapper.toOrder(
+                request,
+                reference, 
+                totalAmount
+        );
+
+        order = repository.save(order);
+
 
 		// persist order
 
@@ -74,28 +89,18 @@ public class OrderServiceImpl implements IOrderService {
 							purchaseRequest.quantity()));
 		}
 
-		// payment confirmation
+		// 7. Send payment request
+        paymentClient.requestOrderPayment(
+                new PaymentRequest(
+                        totalAmount,
+                        request.payment(),
+                        order.getId(),
+                        order.getReference(),
+                        customer
+                )
+        );
 
-		paymentClient.requestOrderPayment(
-				new PaymentRequest(
-						request.amount(), 
-						request.payment(), 
-						order.getId(), 
-						order.getReference(), 
-						customer)
-				);
-		
-		// send order confirmation ->notification-ms
-		orderProducer.orderSendConfirmation(
-
-				new OrderConfirmation(
-						request.reference(), 
-						request.amount(), 
-						request.payment(), 
-						customer,
-						purchaseProducts));
-
-		return order.getId();
+		return mapper.fromOrder(order);
 	}
 
 	@Override
