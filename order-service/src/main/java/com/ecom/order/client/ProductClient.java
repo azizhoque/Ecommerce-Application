@@ -25,6 +25,9 @@ public class ProductClient {
 	@Value("${application.config.product-url}")
 	private String productUrl;
 
+	@Value("${application.config.product-find-url}")
+	private String productfindUrl;
+	
 	private final RestTemplate restTemplate;
 
 	public List<PurchaseResponse> purchaseProducts(List<PurchaseRequest> requestBody) {
@@ -46,5 +49,19 @@ public class ProductClient {
 				                                 +responseEntity.getStatusCode());
 				}
 				return responseEntity.getBody();
+	}
+
+	public PurchaseResponse findByProductId(Integer productId) {
+		
+		ResponseEntity<PurchaseResponse> responseEntity = restTemplate.getForEntity(productUrl+"/"+productId,PurchaseResponse.class);
+		
+		 if (responseEntity.getStatusCode().isError()
+	                || responseEntity.getBody() == null) {
+
+	            throw new BusinessException(
+	                    "Product not found with id: " + productId
+	            );
+		 }
+		 return responseEntity.getBody();
 	}
 }
