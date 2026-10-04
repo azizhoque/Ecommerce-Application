@@ -25,99 +25,141 @@ import lombok.extern.slf4j.Slf4j;
 public class EmailService {
 
 	private JavaMailSender mailSender;
-	
+
 	private SpringTemplateEngine templateEngine;
-	
+
 	public void sendPaymentSuccessEmail(
-			
+
 			String destinationEmail,
-			
+
 			String customerName,
-			
+
 			BigDecimal amount,
-			
-			String orderReference
-			) {
-		
+
+			String orderReference) {
+
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
-		
+
 		try {
-			MimeMessageHelper messageHelper = 
-					new MimeMessageHelper(
-							mimeMessage, 
-							MimeMessageHelper.MULTIPART_MODE_RELATED, 
-							StandardCharsets.UTF_8.name()
-							);
+			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,
+					MimeMessageHelper.MULTIPART_MODE_RELATED, StandardCharsets.UTF_8.name());
 			messageHelper.setFrom("contact@azizecom.com");
 			final String templateName = EmailTemplate.PAYMENT_CNFIRMATION.getTemplate();
-			
+
 			Map<String, Object> variables = new HashMap<>();
 			variables.put("customerName", customerName);
 			variables.put("amount", amount);
 			variables.put("orderReference", orderReference);
-			Context context=new Context();
+			Context context = new Context();
 			context.setVariables(variables);
 			messageHelper.setSubject(EmailTemplate.PAYMENT_CNFIRMATION.getSubject());
-			
+
 			String htmlTemplate = templateEngine.process(templateName, context);
 			messageHelper.setText(htmlTemplate, true);
 			messageHelper.setTo(destinationEmail);
 			mailSender.send(mimeMessage);
-			
-			log.info("INFO- Email successfully send to %s with template %s", destinationEmail,templateName);
+
+			log.info("INFO- Email successfully send to %s with template %s", destinationEmail, templateName);
 		} catch (MessagingException e) {
 			e.printStackTrace();
-			log.warn("WARN - Cannot send email to {}",destinationEmail);
+			log.warn("WARN - Cannot send email to {}", destinationEmail);
 		}
-		
+
 	}
-	
-public void sendOrerConfirmationEmail(
-			
+
+	public void sendOrerConfirmationEmail(
+
 			String destinationEmail,
-			
+
 			String customerName,
-			
+
 			BigDecimal amount,
-			
+
 			String orderReference,
-			
-			List<Product> product
-			) {
-		
+
+			List<Product> product) {
+
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
-		
+
 		try {
-			MimeMessageHelper messageHelper = 
-					new MimeMessageHelper(
-							mimeMessage, 
-							MimeMessageHelper.MULTIPART_MODE_RELATED, 
-							StandardCharsets.UTF_8.name()
-							);
+			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,
+					MimeMessageHelper.MULTIPART_MODE_RELATED, StandardCharsets.UTF_8.name());
 			messageHelper.setFrom("contact@azizecom.com");
 			final String templateName = EmailTemplate.ORDER_CNFIRMATION.getTemplate();
-			
+
 			Map<String, Object> variables = new HashMap<>();
 			variables.put("customerName", customerName);
 			variables.put("amount", amount);
 			variables.put("orderReference", orderReference);
 			variables.put("products", product);
-			Context context=new Context();
+			Context context = new Context();
 			context.setVariables(variables);
 			messageHelper.setSubject(EmailTemplate.ORDER_CNFIRMATION.getSubject());
-			
+
 			String htmlTemplate = templateEngine.process(templateName, context);
 			messageHelper.setText(htmlTemplate, true);
 			messageHelper.setTo(destinationEmail);
 			mailSender.send(mimeMessage);
-			
-			log.info("INFO- Email successfully send to %s with template %s", destinationEmail,templateName);
+
+			log.info("INFO- Email successfully send to %s with template %s", destinationEmail, templateName);
 		} catch (MessagingException e) {
 			e.printStackTrace();
-			log.warn("WARN - Cannot send email to {}",destinationEmail);
+			log.warn("WARN - Cannot send email to {}", destinationEmail);
 		}
-		
+
 	}
-	
-	
+
+	public void sendOrderFailedEmail(
+
+			String destinationEmail,
+
+			String customerName,
+
+			BigDecimal amount,
+
+			String orderReference,
+
+			String reason
+
+	) {
+
+		MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+		try {
+
+			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,
+					MimeMessageHelper.MULTIPART_MODE_RELATED, StandardCharsets.UTF_8.name());
+
+			messageHelper.setFrom("contact@azizecom.com");
+
+			final String templateName = EmailTemplate.ORDER_FAILED.getTemplate();
+
+			Map<String, Object> variables = new HashMap<>();
+
+			variables.put("customerName", customerName);
+			variables.put("amount", amount);
+			variables.put("orderReference", orderReference);
+			variables.put("reason", reason);
+
+			Context context = new Context();
+			context.setVariables(variables);
+
+			messageHelper.setSubject(EmailTemplate.ORDER_FAILED.getSubject());
+
+			String htmlTemplate = templateEngine.process(templateName, context);
+
+			messageHelper.setText(htmlTemplate, true);
+
+			messageHelper.setTo(destinationEmail);
+
+			mailSender.send(mimeMessage);
+
+			log.info("Email successfully sent to {} with template {}", destinationEmail, templateName);
+
+		} catch (MessagingException e) {
+
+			log.warn("Cannot send order failed email to {}", destinationEmail, e);
+		}
+	}
+
 }
