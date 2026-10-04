@@ -2,11 +2,10 @@ package com.ecom.kafka.producer;
 
 import java.math.BigDecimal;
 
+import com.ecom.customer.response.CustomerResponse;
 import com.ecom.order.model.PaymentMethod;
 
 public record OrderPaymentFailed(
-		
-		Integer orderId,
 		
         String orderReference,
         
@@ -14,11 +13,7 @@ public record OrderPaymentFailed(
         
         PaymentMethod paymentMethod,
         
-        String customerFirstName,
-        
-        String customerLastName,
-        
-        String customerEmail,
+        CustomerResponse customer,
         
         String reason
 		

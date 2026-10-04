@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.ecom.kafka.producer.OrderPaymentFailed;
+import com.ecom.kafka.producer.OrderProducer;
+import com.ecom.kafka.producer.OrderSuccess;
 import com.ecom.order.client.CustomerClient;
 import com.ecom.order.client.PaymentClient;
 import com.ecom.order.client.ProductClient;
@@ -41,6 +44,8 @@ public class OrderServiceImpl implements IOrderService {
 	private final OrderLineService orderLineService;
 
 	private final PaymentClient paymentClient;
+	
+	private final OrderProducer orderProducer;
 
 	@Transactional
 	@Override
@@ -88,13 +93,21 @@ public class OrderServiceImpl implements IOrderService {
         // Payment failed -> DO NOT create order
         if (paymentResponse == null) {
 
+        	orderProducer.sendOrderNotPlaced(
+        			new OrderPaymentFailed(
+        					reference,
+        					totalAmount,
+        					request.payment(),
+        					customer,
+        					"Payment-failed"
+        					)
+        			);
             throw new BusinessException(
-                    "Payment failed. Order was not placed."
-            );
+                    "Payment failed. Order was not placed.");
         }
 
         // Payment successful -> reduce product stock
-        productClient.purchaseProducts(request.product());
+        var purchaseProducts = productClient.purchaseProducts(request.product());
 
         // Create order 
         var order = mapper.toOrder(
@@ -107,6 +120,7 @@ public class OrderServiceImpl implements IOrderService {
         order.setPaymentStatus(PaymentStatus.SUCCESSS);
         order = repository.save(order);
 
+        //
 
 		// persist order
 
@@ -119,7 +133,16 @@ public class OrderServiceImpl implements IOrderService {
 							purchaseRequest.quantity()));
 		}
 
-		
+		// 9. Order confirmed notification
+		orderProducer.sendOrderConfirmation(
+	            new OrderSuccess(
+	                    reference,
+	                    totalAmount,
+	                    request.payment(),
+	                    customer,
+	                    purchaseProducts
+	            )
+	    );
 
 		return mapper.fromOrder(order);
 	}
