@@ -2,9 +2,9 @@ package com.ecom.order.model;
 
 public enum OrderStatus {
 
-	CONFIRMED,
+	ORDER_CONFIRMED,
 	
-	FAILED;
+	ORDER_NOT_PLACED	;
 
 	}
 

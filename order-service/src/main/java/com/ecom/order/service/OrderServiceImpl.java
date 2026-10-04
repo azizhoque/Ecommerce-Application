@@ -103,7 +103,7 @@ public class OrderServiceImpl implements IOrderService {
                 totalAmount
         );
 
-        order.setOrderStatus(OrderStatus.CONFIRMED);
+        order.setOrderStatus(OrderStatus.ORDER_CONFIRMED);
         order.setPaymentStatus(PaymentStatus.SUCCESSS);
         order = repository.save(order);
 
