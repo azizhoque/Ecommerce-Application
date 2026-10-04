@@ -51,34 +51,60 @@ public class OrderServiceImpl implements IOrderService {
 		var customer = this.customerClient.findCustomerByID(request.customerId())
 				.orElseThrow(() -> new BusinessException(
 						"Cannot create order ::No customer exists with id: " + request.customerId()));
-
-		// purchase the product ---by product-ms(Using RestTemplate)
-
-		var purchaseProducts = this.productClient.purchaseProducts(request.product());
 		
-		  // 3. Calculate total amount from Product Service response
-        BigDecimal totalAmount = purchaseProducts.stream()
-                .map(product ->
-                        product.price()
-                                .multiply(
-                                        BigDecimal.valueOf(product.quantity())
-                                )
-                )
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+	   //check product + stock and calculate total amount
+		BigDecimal totalAmount = BigDecimal.ZERO;
+		for(PurchaseRequest purchaseRequest:request.product()) {
+			var product= productClient.findByProductId(purchaseRequest.productId());
+			
+			 // Check stock
+            if (product.quantity() < purchaseRequest.quantity()) {
+
+                throw new BusinessException(
+                        "Insufficient stock for product id: "
+                                + purchaseRequest.productId()
+                );
+		     }
+            
+            BigDecimal productTotal = product.price().multiply(BigDecimal.valueOf(purchaseRequest.quantity()));
 		
-		//create order reference for each order
+            totalAmount= totalAmount.add(productTotal);
+		} 
+		//generate order reference
 		String reference = "ORD-" + UUID.randomUUID();
 		
+		// Send payment request
+        var paymentResponse = paymentClient.requestOrderPayment(
+                new PaymentRequest(
+                        totalAmount,
+                        request.payment(),
+                        request.id(),
+                        reference,
+                        customer
+                )
+        );
+        
 
-        // 5. Create order with PENDING status
+        // Payment failed -> DO NOT create order
+        if (paymentResponse == null) {
+
+            throw new BusinessException(
+                    "Payment failed. Order was not placed."
+            );
+        }
+
+        // Payment successful -> reduce product stock
+        productClient.purchaseProducts(request.product());
+
+        // Create order 
         var order = mapper.toOrder(
                 request,
                 reference, 
                 totalAmount
         );
 
-        order.setOrderStatus(OrderStatus.PENDING);
-        order.setPaymentStatus(PaymentStatus.PENDING);
+        order.setOrderStatus(OrderStatus.CONFIRMED);
+        order.setPaymentStatus(PaymentStatus.SUCCESSS);
         order = repository.save(order);
 
 
@@ -93,34 +119,21 @@ public class OrderServiceImpl implements IOrderService {
 							purchaseRequest.quantity()));
 		}
 
-		// 7. Send payment request
-        paymentClient.requestOrderPayment(
-                new PaymentRequest(
-                        totalAmount,
-                        request.payment(),
-                        order.getId(),
-                        order.getReference(),
-                        customer
-                )
-        );
+		
 
 		return mapper.fromOrder(order);
 	}
 
 	@Override
 	public List<OrderResponse> findAll() {
-		
-		return repository.findAll().
-				stream().
-				map(mapper::fromOrder).
-				collect(Collectors.toList());
+
+		return repository.findAll().stream().map(mapper::fromOrder).collect(Collectors.toList());
 	}
 
 	@Override
 	public OrderResponse findById(Integer orderId) {
-		return repository.findById(orderId).
-				map(mapper::fromOrder).
-				orElseThrow(()-> new EntityNotFoundException("No order found with provided id: "+orderId));
+		return repository.findById(orderId).map(mapper::fromOrder)
+				.orElseThrow(() -> new EntityNotFoundException("No order found with provided id: " + orderId));
 	}
 
 }

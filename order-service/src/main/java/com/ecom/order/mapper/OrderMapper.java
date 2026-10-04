@@ -5,10 +5,8 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 
 import com.ecom.order.model.Order;
-import com.ecom.order.model.OrderStatus;
 import com.ecom.order.request.OrderRequest;
 import com.ecom.order.response.OrderResponse;
-import com.ecom.order.response.PaymentStatus;
 
 @Service
 public class OrderMapper {
@@ -20,7 +18,6 @@ public class OrderMapper {
 		            .totalAmount(totalAmount)
 		            .payment(request.payment())
 		            .customerId(request.customerId())
-		            .orderStatus(OrderStatus.PENDING)
 		            .build();
 	}
 	
