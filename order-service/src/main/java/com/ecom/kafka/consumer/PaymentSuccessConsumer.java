@@ -39,13 +39,11 @@ public class PaymentSuccessConsumer {
         // Notification Service-এ পাঠাবে
         orderProducer.sendOrderConfirmation(
                 new OrderPaymentSuccess(
-                        order.getId(),
-                        order.getReference(),
-                        order.getTotalAmount(),
-                        order.getPayment(),
-                        event.customerFirstName(),
-                        event.customerLastName(),
-                        event.customerEmail()
+                		event.paymentId(),
+                		event.orderId(),
+                		event.orderReference(),
+                		event.amount()
+                		
                 )
         );
    }
