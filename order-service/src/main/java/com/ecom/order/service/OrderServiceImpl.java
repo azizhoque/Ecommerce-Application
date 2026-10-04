@@ -12,10 +12,12 @@ import com.ecom.order.client.PaymentClient;
 import com.ecom.order.client.ProductClient;
 import com.ecom.order.exception.BusinessException;
 import com.ecom.order.mapper.OrderMapper;
+import com.ecom.order.model.OrderStatus;
 import com.ecom.order.payment.request.PaymentRequest;
 import com.ecom.order.repository.IOrderRepository;
 import com.ecom.order.request.OrderRequest;
 import com.ecom.order.response.OrderResponse;
+import com.ecom.order.response.PaymentStatus;
 import com.ecom.orderline.request.OrderLineRequest;
 import com.ecom.orderline.service.OrderLineService;
 import com.ecom.productpurchase.request.PurchaseRequest;
@@ -75,6 +77,8 @@ public class OrderServiceImpl implements IOrderService {
                 totalAmount
         );
 
+        order.setOrderStatus(OrderStatus.PENDING);
+        order.setPaymentStatus(PaymentStatus.PENDING);
         order = repository.save(order);
 
 

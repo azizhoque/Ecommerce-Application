@@ -8,6 +8,7 @@ import com.ecom.order.model.Order;
 import com.ecom.order.model.OrderStatus;
 import com.ecom.order.request.OrderRequest;
 import com.ecom.order.response.OrderResponse;
+import com.ecom.order.response.PaymentStatus;
 
 @Service
 public class OrderMapper {
