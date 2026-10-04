@@ -1,21 +1,26 @@
 package com.ecom.order.mapper;
 
+import java.math.BigDecimal;
+
 import org.springframework.stereotype.Service;
 
 import com.ecom.order.model.Order;
+import com.ecom.order.model.OrderStatus;
 import com.ecom.order.request.OrderRequest;
 import com.ecom.order.response.OrderResponse;
 
 @Service
 public class OrderMapper {
 
-	public Order toOrder(OrderRequest request,String reference) {
+	public Order toOrder(OrderRequest request,String reference,BigDecimal totalAmount) {
 
-		return Order.builder().
-				id(request.id()).
-				reference(reference).
-				payment(request.payment()).
-				customerId(request.customerId()).build();
+		 return Order.builder()
+		            .reference(reference)
+		            .totalAmount(totalAmount)
+		            .payment(request.payment())
+		            .customerId(request.customerId())
+		            .orderStatus(OrderStatus.PENDING)
+		            .build();
 	}
 	
 	public OrderResponse fromOrder(Order order) {
@@ -25,8 +30,8 @@ public class OrderMapper {
 				order.getTotalAmount(),
 				order.getPayment(),
 				order.getCustomerId(),
-				order.getOrderStatus()
-				
+				order.getOrderStatus(),
+				order.getPaymentStatus()
 				);
 	}
 }
