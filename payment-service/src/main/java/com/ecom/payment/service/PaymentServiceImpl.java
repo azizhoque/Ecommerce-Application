@@ -6,7 +6,9 @@ import com.ecom.payment.customer.PaymentRequest;
 import com.ecom.payment.mapper.PaymentMapper;
 import com.ecom.payment.notification.request.PaymentNotificationRequest;
 import com.ecom.payment.producer.NotificationProducer;
+import com.ecom.payment.producer.PaymentProducer;
 import com.ecom.payment.repository.IPaymentRepository;
+import com.ecom.payment.response.PaymentSuccessResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +21,8 @@ public class PaymentServiceImpl implements IPaymentService {
 	private final PaymentMapper mapper;
 	
 	private final NotificationProducer notificationProducer;
+	
+	private final PaymentProducer paymentProducer;
 	
 	@Override
 	public Integer createPayment(PaymentRequest request) {
@@ -39,6 +43,14 @@ public class PaymentServiceImpl implements IPaymentService {
 	            )
 	        );
 
+	        paymentProducer.sendPaymentSuccess(
+	                new PaymentSuccessResponse(
+	                    payment.getId(),
+	                    request.orderId(),
+	                    request.orderReference(),
+	                    request.amount()
+	                )
+	            );
 	        return payment.getId();
 
 	    }catch (Exception e) {
