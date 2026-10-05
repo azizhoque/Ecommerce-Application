@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.ecom.notification.email.EmailService;
 import com.ecom.notification.kafka.order.OrderConfirmation;
-import com.ecom.notification.kafka.order.OrderFailed;
-import com.ecom.notification.kafka.payment.PaymentConfirmation;
+import com.ecom.notification.kafka.payment.PaymentFailedConsumer;
+import com.ecom.notification.kafka.payment.PaymentSuccessConsumer;
 import com.ecom.notification.model.Notification;
 import com.ecom.notification.model.NotificationType;
 import com.ecom.notification.repository.INotificationRepository;
@@ -25,27 +25,27 @@ public class NotificationConsumer {
 
 	private EmailService emailService;
 
-	@KafkaListener(topics = "payment-topic", 
-			       groupId = "paymentGroup")
-	public void consumePaymentSuccessNotification(PaymentConfirmation paymentConfirmation) {
+	@KafkaListener(topics = "payment-sucess", 
+			       groupId = "paymentSucessGroup")
+	public void consumePaymentSuccessNotification(PaymentSuccessConsumer paymentSuccess) {
 
-		log.info("Consuming the message from payment-topic Tpoic :: %s", paymentConfirmation);
+		log.info("Consuming the message from payment-topic Tpoic :: %s", paymentSuccess);
 
 		notificationRepository.save(
 
 				Notification.builder().
-				type(NotificationType.PAYMENT_CONFIRMATION).
+				type(NotificationType.PAYMENT_SUCCESS).
 				notificationDate(LocalDateTime.now()).
-			    paymentConfirmation(paymentConfirmation).
+			    paymentSuccess(paymentSuccess).
 			    build());
 
 		// send mail
-		var customerName = paymentConfirmation.customerFirstName() + " " + paymentConfirmation.customerLastName();
+		var customerName = paymentSuccess.customerFirstName() + " " + paymentSuccess.customerLastName();
 		emailService.sendPaymentSuccessEmail(
-				paymentConfirmation.customerEmail(), 
+				paymentSuccess.customerEmail(), 
 				customerName,
-				paymentConfirmation.amount(), 
-				paymentConfirmation.orderReference());
+				paymentSuccess.amount(), 
+				paymentSuccess.orderReference());
 	}
 
 	@KafkaListener(topics = "order-topic", groupId = "orderConfirmGroup")
@@ -70,19 +70,26 @@ public class NotificationConsumer {
 				orderConfirmation.product());
 	}
 
-	@KafkaListener(topics = "order-failed", groupId = "orderFailedGroup")
-	public void consumeOrderFailedNotification(OrderFailed orderFailedNotification) {
+	@KafkaListener(topics = "payment-failed", groupId = "paymentFailedGroup")
+	public void consumePaymentFailedNotification(PaymentFailedConsumer paymentFailed) {
 
-		log.info("Consuming the message from order-failed Topic :: {}", orderFailedNotification);
+		log.info("Consuming the message from payment-topic Tpoic :: %s", paymentFailed);
 
-		// যদি Notification entity-তে failed notification রাখো
-		// তাহলে এখানে save করবে
+		notificationRepository.save(
 
-		var customerName = orderFailedNotification.customer().firstName() + " "
-				+ orderFailedNotification.customer().lastName();
+				Notification.builder().
+				type(NotificationType.PAYMENT_FAILED).
+				notificationDate(LocalDateTime.now()).
+			    paymentFailed(paymentFailed).
+			    build());
 
-		emailService.sendOrderFailedEmail(orderFailedNotification.customer().email(), customerName,
-				orderFailedNotification.amount(), orderFailedNotification.orderReference(),
-				orderFailedNotification.reason());
+		// send mail
+		var customerName = paymentFailed.customerFirstName() + " " + paymentFailed.customerLastName();
+		emailService.sendPaymentFailedEmail(
+				paymentFailed.customerEmail(), 
+				customerName,
+				paymentFailed.amount(), 
+				paymentFailed.orderReference(),
+				paymentFailed.reason());
 	}
 }
