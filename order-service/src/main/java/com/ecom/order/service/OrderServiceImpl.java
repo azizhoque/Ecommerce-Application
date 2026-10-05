@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.ecom.kafka.producer.OrderPaymentFailed;
 import com.ecom.kafka.producer.OrderProducer;
 import com.ecom.kafka.producer.OrderSuccess;
 import com.ecom.order.client.CustomerClient;
@@ -92,16 +91,6 @@ public class OrderServiceImpl implements IOrderService {
 
         // Payment failed -> DO NOT create order
         if (paymentResponse == null) {
-
-        	orderProducer.sendOrderNotPlaced(
-        			new OrderPaymentFailed(
-        					reference,
-        					totalAmount,
-        					request.payment(),
-        					customer,
-        					"Payment-failed"
-        					)
-        			);
             throw new BusinessException(
                     "Payment failed. Order was not placed.");
         }
