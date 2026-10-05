@@ -44,7 +44,7 @@ public class EmailService {
 			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,
 					MimeMessageHelper.MULTIPART_MODE_RELATED, StandardCharsets.UTF_8.name());
 			messageHelper.setFrom("contact@azizecom.com");
-			final String templateName = EmailTemplate.PAYMENT_CNFIRMATION.getTemplate();
+			final String templateName = EmailTemplate.PAYMENT_SUCCESS.getTemplate();
 
 			Map<String, Object> variables = new HashMap<>();
 			variables.put("customerName", customerName);
@@ -52,7 +52,7 @@ public class EmailService {
 			variables.put("orderReference", orderReference);
 			Context context = new Context();
 			context.setVariables(variables);
-			messageHelper.setSubject(EmailTemplate.PAYMENT_CNFIRMATION.getSubject());
+			messageHelper.setSubject(EmailTemplate.PAYMENT_SUCCESS.getSubject());
 
 			String htmlTemplate = templateEngine.process(templateName, context);
 			messageHelper.setText(htmlTemplate, true);
@@ -109,7 +109,7 @@ public class EmailService {
 
 	}
 
-	public void sendOrderFailedEmail(
+	public void sendPaymentFailedEmail(
 
 			String destinationEmail,
 
@@ -117,49 +117,35 @@ public class EmailService {
 
 			BigDecimal amount,
 
-			String orderReference,
-
-			String reason
-
-	) {
+			String orderReference) {
 
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 
 		try {
-
 			MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,
 					MimeMessageHelper.MULTIPART_MODE_RELATED, StandardCharsets.UTF_8.name());
-
 			messageHelper.setFrom("contact@azizecom.com");
-
-			final String templateName = EmailTemplate.ORDER_FAILED.getTemplate();
+			final String templateName = EmailTemplate.PAYMENT_FAILED.getTemplate();
 
 			Map<String, Object> variables = new HashMap<>();
-
 			variables.put("customerName", customerName);
 			variables.put("amount", amount);
 			variables.put("orderReference", orderReference);
-			variables.put("reason", reason);
-
 			Context context = new Context();
 			context.setVariables(variables);
-
-			messageHelper.setSubject(EmailTemplate.ORDER_FAILED.getSubject());
+			messageHelper.setSubject(EmailTemplate.PAYMENT_FAILED.getSubject());
 
 			String htmlTemplate = templateEngine.process(templateName, context);
-
 			messageHelper.setText(htmlTemplate, true);
-
 			messageHelper.setTo(destinationEmail);
-
 			mailSender.send(mimeMessage);
 
-			log.info("Email successfully sent to {} with template {}", destinationEmail, templateName);
-
+			log.info("INFO- Email successfully send to %s with template %s", destinationEmail, templateName);
 		} catch (MessagingException e) {
-
-			log.warn("Cannot send order failed email to {}", destinationEmail, e);
+			e.printStackTrace();
+			log.warn("WARN - Cannot send email to {}", destinationEmail);
 		}
+
 	}
 
 }
