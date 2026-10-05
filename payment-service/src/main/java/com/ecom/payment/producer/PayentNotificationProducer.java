@@ -15,13 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PayentNotificationProducer {
 
-	private final KafkaTemplate<String, PaymentNotificationRequest> kafkaTemplate;
+	private final KafkaTemplate<String, PaymentFailedNotificationRequest> kafkaTemplate;
 	
-	public void sendNotification(PaymentNotificationRequest request) {
+	public void sendNotification(PaymentFailedNotificationRequest request) {
 		
 		log.info("Sending notification with body <{}> ", request);
 		
-		Message<PaymentNotificationRequest> message = 
+		Message<PaymentFailedNotificationRequest> message = 
 				MessageBuilder.
 				withPayload(request).
 				setHeader(KafkaHeaders.TOPIC, "payment-topic").
