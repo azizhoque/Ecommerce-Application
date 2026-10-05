@@ -4,5 +4,7 @@ public enum NotificationType {
 
 	ORDER_CONFIRMATION,
 	
-	PAYMENT_CONFIRMATION
+	PAYMENT_SUCCESS,
+	
+	PAYMENT_FAILED
 }
