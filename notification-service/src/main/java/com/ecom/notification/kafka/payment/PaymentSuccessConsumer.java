@@ -2,7 +2,7 @@ package com.ecom.notification.kafka.payment;
 
 import java.math.BigDecimal;
 
-public record PaymentConfirmation(
+public record PaymentSuccessConsumer(
 		
 		String orderReference,
 		
@@ -14,7 +14,9 @@ public record PaymentConfirmation(
 		
 		String customerLastName,
 		
-		String customerEmail
+		String customerEmail,
+		
+		PaymentStatus status
 		
 		) {
 
