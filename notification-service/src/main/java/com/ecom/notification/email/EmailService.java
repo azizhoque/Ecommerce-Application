@@ -117,7 +117,10 @@ public class EmailService {
 
 			BigDecimal amount,
 
-			String orderReference) {
+			String orderReference,
+			
+			String reason
+			) {
 
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 
@@ -131,6 +134,7 @@ public class EmailService {
 			variables.put("customerName", customerName);
 			variables.put("amount", amount);
 			variables.put("orderReference", orderReference);
+			variables.put("reason", reason);
 			Context context = new Context();
 			context.setVariables(variables);
 			messageHelper.setSubject(EmailTemplate.PAYMENT_FAILED.getSubject());
