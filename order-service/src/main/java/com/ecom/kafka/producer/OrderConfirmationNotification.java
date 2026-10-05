@@ -7,7 +7,7 @@ import com.ecom.customer.response.CustomerResponse;
 import com.ecom.order.model.PaymentMethod;
 import com.ecom.productpurchase.respponse.PurchaseResponse;
 
-public record OrderSuccess(
+public record OrderConfirmationNotification(
 
 		String orderReference, 
 		BigDecimal totalAmount, 

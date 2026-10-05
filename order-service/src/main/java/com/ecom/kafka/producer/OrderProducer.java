@@ -16,9 +16,9 @@ public class OrderProducer {
 
 	private final KafkaTemplate<String, Object> kafkaTemplate;
 	
-	public void sendOrderConfirmation(OrderSuccess event) {
+	public void sendOrderConfirmation(OrderConfirmationNotification event) {
 
-        Message<OrderSuccess> message =
+        Message<OrderConfirmationNotification> message =
                 MessageBuilder
                         .withPayload(event)
                         .setHeader(KafkaHeaders.TOPIC, "order-confirmed")

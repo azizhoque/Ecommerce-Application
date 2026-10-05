@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.ecom.kafka.producer.OrderProducer;
-import com.ecom.kafka.producer.OrderSuccess;
+import com.ecom.kafka.producer.OrderConfirmationNotification;
 import com.ecom.order.client.CustomerClient;
 import com.ecom.order.client.PaymentClient;
 import com.ecom.order.client.ProductClient;
@@ -124,7 +124,7 @@ public class OrderServiceImpl implements IOrderService {
 
 		// 9. Order confirmed notification
 		orderProducer.sendOrderConfirmation(
-	            new OrderSuccess(
+	            new OrderConfirmationNotification(
 	                    reference,
 	                    totalAmount,
 	                    request.payment(),
