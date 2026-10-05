@@ -27,14 +27,4 @@ public class OrderProducer {
         kafkaTemplate.send(message);
     }
 
-    public void sendOrderNotPlaced(OrderPaymentFailed event) {
-
-        Message<OrderPaymentFailed> message =
-                MessageBuilder
-                        .withPayload(event)
-                        .setHeader(KafkaHeaders.TOPIC, "order-not-placed")
-                        .build();
-
-        kafkaTemplate.send(message);
-    }
 }
