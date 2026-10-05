@@ -6,7 +6,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
-import com.ecom.payment.notification.request.PaymentNotificationRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class NotificationProducer {
+public class PayentNotificationProducer {
 
 	private final KafkaTemplate<String, PaymentNotificationRequest> kafkaTemplate;
 	
