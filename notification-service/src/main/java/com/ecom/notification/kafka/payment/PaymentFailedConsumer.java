@@ -14,7 +14,11 @@ public record PaymentFailedConsumer(
 		
 		String customerLastName,
 		
-		String customerEmail
+		String customerEmail,
+		
+		PaymentStatus status,
+		
+		String reason
 		
 		) {
 
