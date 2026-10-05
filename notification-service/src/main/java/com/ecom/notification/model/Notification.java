@@ -7,7 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
 import com.ecom.notification.kafka.order.OrderConfirmation;
-import com.ecom.notification.kafka.payment.PaymentConfirmation;
+import com.ecom.notification.kafka.payment.PaymentFailedConsumer;
+import com.ecom.notification.kafka.payment.PaymentSuccessConsumer;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,5 +34,7 @@ public class Notification {
 
     private OrderConfirmation orderConfirmation;
 	
-	private PaymentConfirmation paymentConfirmation;
+	private PaymentSuccessConsumer paymentSuccess;
+	
+	private PaymentFailedConsumer paymentFailed;
 }
