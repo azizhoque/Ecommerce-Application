@@ -4,12 +4,11 @@ import org.springframework.stereotype.Service;
 
 import com.ecom.payment.customer.PaymentRequest;
 import com.ecom.payment.mapper.PaymentMapper;
-import com.ecom.payment.notification.request.PaymentNotificationRequest;
-import com.ecom.payment.producer.NotificationProducer;
-import com.ecom.payment.producer.PaymentProducer;
+import com.ecom.payment.model.PaymentStatus;
+import com.ecom.payment.producer.PayentNotificationProducer;
+import com.ecom.payment.producer.PaymentFailedNotificationRequest;
+import com.ecom.payment.producer.PaymentSuccessNotificationRequest;
 import com.ecom.payment.repository.IPaymentRepository;
-import com.ecom.payment.response.PaymentSuccessResponse;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,51 +19,44 @@ public class PaymentServiceImpl implements IPaymentService {
 	
 	private final PaymentMapper mapper;
 	
-	private final NotificationProducer notificationProducer;
-	
-	private final PaymentProducer paymentProducer;
+	private final PayentNotificationProducer notificationProducer;
 	
 	@Override
 	public Integer createPayment(PaymentRequest request) {
 		
 		try {
+			
+			//1.save payment
 			var payment = repository.save(mapper.toPayment(request));
-	        // Payment success notification
-	        notificationProducer.sendNotification(
-	            new PaymentNotificationRequest(
-	                request.orderReference(),
-	                request.amount(),
-	                request.payMethod(),
-	                request.customer().firstName(),
-	                request.customer().lastName(),
-	                request.customer().email(),
-	                "SUCCESS",
-	                null
-	            )
+	        
+
+	        // Payment successful
+	        notificationProducer.sendPaymentSuccessNotification(
+	            new PaymentSuccessNotificationRequest(
+	            		request.orderReference(), 
+	            		request.amount(), 
+	            		request.payMethod(), 
+	            		request.customer().firstName(), 
+	            		request.customer().lastName(), 
+	            		request.customer().email(),
+	            		PaymentStatus.PAYMENT_SUCCESS
+	            		)
 	        );
 
-	        paymentProducer.sendPaymentSuccess(
-	                new PaymentSuccessResponse(
-	                    payment.getId(),
-	                    request.orderId(),
-	                    request.orderReference(),
-	                    request.amount()
-	                )
-	            );
 	        return payment.getId();
 
 	    }catch (Exception e) {
 
-	        // Payment failed notification
-	        notificationProducer.sendNotification(
-	            new PaymentNotificationRequest(
+	    	// Payment failed notification
+	        notificationProducer.sendPaymentFailedNotification(
+	            new PaymentFailedNotificationRequest(
 	                request.orderReference(),
 	                request.amount(),
 	                request.payMethod(),
 	                request.customer().firstName(),
 	                request.customer().lastName(),
 	                request.customer().email(),
-	                "FAILED",
+	                PaymentStatus.PAYMENT_FAILED,
 	                e.getMessage()
 	            )
 	        );
