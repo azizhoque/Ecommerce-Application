@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.ecom.kafka.producer.OrderProducer;
+import com.ecom.customer.response.CustomerStatus;
 import com.ecom.kafka.producer.OrderConfirmationNotification;
 import com.ecom.order.client.CustomerClient;
 import com.ecom.order.client.PaymentClient;
@@ -55,7 +56,9 @@ public class OrderServiceImpl implements IOrderService {
 		var customer = this.customerClient.findCustomerByID(request.customerId())
 				.orElseThrow(() -> new BusinessException(
 						"Cannot create order ::No customer exists with id: " + request.customerId()));
-		
+		if(customer.customerStatus().equals(CustomerStatus.DEACTIVE)) {
+			throw new BusinessException("Customer status is DEACTIVE :: can not placed order with this customer :"+customer.firstName()+" "+customer.lastname());
+		}
 	   //check product + stock
 		BigDecimal totalAmount = BigDecimal.ZERO;
 		for(PurchaseRequest purchaseRequest:request.product()) {
