@@ -48,7 +48,7 @@ public class NotificationConsumer {
 				paymentSuccess.orderReference());
 	}
 
-	@KafkaListener(topics = "order-topic", groupId = "orderConfirmGroup")
+	@KafkaListener(topics = "order-confirmed", groupId = "orderConfirmGroup")
 	public void consumeOrderConfirmationNotification(OrderConfirmation orderConfirmation) {
 
 		log.info("Consuming the message from order-topic Tpoic :: %s", orderConfirmation);
