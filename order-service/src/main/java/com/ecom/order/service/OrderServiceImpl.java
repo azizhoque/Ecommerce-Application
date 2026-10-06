@@ -56,7 +56,7 @@ public class OrderServiceImpl implements IOrderService {
 		var customer = this.customerClient.findCustomerByID(request.customerId())
 				.orElseThrow(() -> new BusinessException(
 						"Cannot create order ::No customer exists with id: " + request.customerId()));
-		if(customer.customerStatus().equals(CustomerStatus.DEACTIVE)) {
+		if(customer.customerStatus() == CustomerStatus.DEACTIVE) {
 			throw new BusinessException("Customer status is DEACTIVE :: can not placed order with this customer :"+customer.firstName()+" "+customer.lastname());
 		}
 	   //check product + stock
