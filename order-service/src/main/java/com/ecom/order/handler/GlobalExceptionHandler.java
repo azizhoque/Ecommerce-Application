@@ -21,6 +21,11 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> ifOrderNoFound(BusinessException bex) {
 		return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(IllegalStateException.class)
+	public ResponseEntity<String> ifCustomerStatusIsDeactive(IllegalStateException ex ){
+		return new ResponseEntity<String>(ex.getMessage(), HttpStatus.FORBIDDEN);
+	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorResponse> ifMethodArgumentNotValid(MethodArgumentNotValidException manv) {
