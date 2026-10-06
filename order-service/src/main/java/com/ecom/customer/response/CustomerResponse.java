@@ -5,7 +5,8 @@ public record CustomerResponse(
 		String customerId,
 		String firstName,
 		String lastname,
-		String email
+		String email,
+		CustomerStatus customerStatus
 		
 		) {
 
