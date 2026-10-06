@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ecom.order.exception.BusinessException;
 import com.ecom.productpurchase.request.PurchaseRequest;
-import com.ecom.productpurchase.respponse.PurchaseResponse;
+import com.ecom.productpurchase.response.PurchaseResponse;
 
 import lombok.RequiredArgsConstructor;
 

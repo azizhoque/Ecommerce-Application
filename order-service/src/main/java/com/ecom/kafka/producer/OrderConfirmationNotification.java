@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ecom.customer.response.CustomerResponse;
 import com.ecom.order.model.PaymentMethod;
-import com.ecom.productpurchase.respponse.PurchaseResponse;
+import com.ecom.productpurchase.response.PurchaseResponse;
 
 public record OrderConfirmationNotification(
 

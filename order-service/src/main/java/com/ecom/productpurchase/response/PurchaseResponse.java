@@ -1,4 +1,4 @@
-package com.ecom.productpurchase.respponse;
+package com.ecom.productpurchase.response;
 
 import java.math.BigDecimal;
 
