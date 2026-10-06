@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.ecom.customer.request.CustomerRequest;
 import com.ecom.customer.response.CustomerResponse;
 import com.ecom.model.Customer;
+import com.ecom.model.CustomerStatus;
 
 @Component
 public class CustomerMapper {
@@ -19,6 +20,7 @@ public class CustomerMapper {
 				lastName(request.lastName()).
 				email(request.email()).
 				address(request.address()).
+				customerStatus(CustomerStatus.ACTIVE).
 				build();
 	}
 
@@ -27,7 +29,9 @@ public class CustomerMapper {
 				customer.getId(), 
 				customer.getFirstName(), 
 				customer.getLastName(),
-				customer.getEmail(), 
-				customer.getAddress());
+				customer.getEmail(),
+				customer.getCustomerStatus(),
+				customer.getAddress()
+				);
 	}
 }

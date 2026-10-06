@@ -26,6 +26,7 @@ public class CustomerServiceImpl implements ICustomerService{
 
 	public String createCustomer(@Valid CustomerRequest request) {
 		var customer = repository.save(mapper.toCustomer(request));
+		
 		return "Customer added successfully with id: " + customer.getId();
 	}
 
