@@ -4,7 +4,7 @@ public enum OrderStatus {
 
 	ORDER_CONFIRMED,
 	
-	ORDER_NOT_PLACED	;
+	ORDER_NOT_PLACED
 
 	}
 
