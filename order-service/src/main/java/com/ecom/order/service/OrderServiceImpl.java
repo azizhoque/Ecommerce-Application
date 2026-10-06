@@ -56,13 +56,13 @@ public class OrderServiceImpl implements IOrderService {
 				.orElseThrow(() -> new BusinessException(
 						"Cannot create order ::No customer exists with id: " + request.customerId()));
 		
-	   //check product + stock and calculate total amount
+	   //check product + stock
 		BigDecimal totalAmount = BigDecimal.ZERO;
 		for(PurchaseRequest purchaseRequest:request.product()) {
 			var product= productClient.findByProductId(purchaseRequest.productId());
 			
 			 // Check stock
-            if (product.quantity() < purchaseRequest.quantity()) {
+            if (product.availableQuantity() < purchaseRequest.quantity()) {
 
                 throw new BusinessException(
                         "Insufficient stock for product id: "
@@ -70,6 +70,7 @@ public class OrderServiceImpl implements IOrderService {
                 );
 		     }
             
+            //calculate total amount of product
             BigDecimal productTotal = product.price().multiply(BigDecimal.valueOf(purchaseRequest.quantity()));
 		
             totalAmount= totalAmount.add(productTotal);
