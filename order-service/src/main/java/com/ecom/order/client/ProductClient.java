@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ecom.order.exception.BusinessException;
 import com.ecom.productpurchase.request.PurchaseRequest;
+import com.ecom.productpurchase.response.ProductResponse;
 import com.ecom.productpurchase.response.PurchaseResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -51,9 +52,10 @@ public class ProductClient {
 				return responseEntity.getBody();
 	}
 
-	public PurchaseResponse findByProductId(Integer productId) {
+	public ProductResponse findByProductId(Integer productId) {
 		
-		ResponseEntity<PurchaseResponse> responseEntity = restTemplate.getForEntity(productUrl+"/"+productId,PurchaseResponse.class);
+		ResponseEntity<ProductResponse> responseEntity = 
+				restTemplate.getForEntity(productfindUrl+"/"+productId,ProductResponse.class);
 		
 		 if (responseEntity.getStatusCode().isError()
 	                || responseEntity.getBody() == null) {
