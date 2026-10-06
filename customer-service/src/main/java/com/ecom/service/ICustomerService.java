@@ -19,5 +19,5 @@ public interface ICustomerService {
 
 	public CustomerResponse findById(String customerId);
 
-	public String deleteById(String customerId);
+	public String deavtiveCustomerById(String customerId);
 }

@@ -10,6 +10,7 @@ import com.ecom.customer.response.CustomerResponse;
 import com.ecom.exception.CustomerNotFoundException;
 import com.ecom.mapper.CustomerMapper;
 import com.ecom.model.Customer;
+import com.ecom.model.CustomerStatus;
 import com.ecom.repository.CustomerRepository;
 
 import io.micrometer.common.util.StringUtils;
@@ -67,10 +68,11 @@ public class CustomerServiceImpl implements ICustomerService{
 				.orElseThrow(() -> new CustomerNotFoundException("customer not found with id: " + customerId));
 	}
 
-	public String deleteById(String customerId) {
-		repository.findById(customerId)
+	public String deavtiveCustomerById(String customerId) {
+		Customer customer = repository.findById(customerId)
 				.orElseThrow(() -> new CustomerNotFoundException("Customer not found with id: " + customerId));
-		repository.deleteById(customerId);
-		return "Customer deleted successfully with id: " + customerId;
+		customer.setCustomerStatus(CustomerStatus.DEACTIVE);
+		repository.save(customer);
+		return "Customer status change from ACTIVE to DEACTIVE successfully with id: " + customerId;
 	}
 }

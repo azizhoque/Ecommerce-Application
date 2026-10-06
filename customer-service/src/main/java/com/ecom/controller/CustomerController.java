@@ -57,9 +57,9 @@ public class CustomerController {
 		return new ResponseEntity<CustomerResponse>(response,HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/deleteCustomer/{customerId}")
+	@DeleteMapping("/deactiveCustomer/{customerId}")
 	public ResponseEntity<String> deleteCustomerById(@PathVariable String customerId){
-		var status = service.deleteById(customerId);
+		var status = service.deavtiveCustomerById(customerId);
 		return new ResponseEntity<String>(status,HttpStatus.OK);
 	}
 }
