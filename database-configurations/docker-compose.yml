@@ -107,6 +107,14 @@ services:
       - microservices-net
     restart: unless-stopped
 
+  zepkin:
+    container_name: zipkin
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411
+    networks:
+      - microservices-net
+
   redis:
     container_name: ecommerce-redis
     image: redis:7
