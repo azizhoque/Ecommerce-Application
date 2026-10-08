@@ -115,6 +115,19 @@ services:
     networks:
       - microservices-net
 
+  keycloak:
+    container_name: keycloak_bsn
+    image: quay.io/keycloak/keycloak
+    ports:
+      - 9090:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    networks:
+      - microservices-net
+    command:
+      - "start-dev"
+
   redis:
     container_name: ecommerce-redis
     image: redis:7
