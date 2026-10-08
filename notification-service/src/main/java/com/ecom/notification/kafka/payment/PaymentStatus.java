@@ -2,7 +2,7 @@ package com.ecom.notification.kafka.payment;
 
 public enum PaymentStatus {
 
-	SUCCESS,
+	PAYMENT_SUCCESS,
 	
-	FAILED
+	PAYMENT_FAILED
 }
