@@ -21,9 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NotificationConsumer {
 
-	private INotificationRepository notificationRepository;
+	private final INotificationRepository notificationRepository;
 
-	private EmailService emailService;
+	private final EmailService emailService;
 
 	@KafkaListener(topics = "payment-sucess", 
 			       groupId = "paymentSucessGroup")
